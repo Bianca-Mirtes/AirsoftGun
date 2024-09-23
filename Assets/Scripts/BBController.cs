@@ -14,7 +14,9 @@ public class BBController : MonoBehaviour
     private float energyInJoules = 1.49f;
     private float conversionRate = 3.281f; //multiplica m/s por isso para chegar em pés
     private Rigidbody rig;
+
     private Vector3 localForward;
+    private Vector3 localUp;
 
     void Start()
     {
@@ -27,18 +29,26 @@ public class BBController : MonoBehaviour
         velocity = Mathf.Sqrt((2 * energyInJoules)/mass);
 
         localForward = transform.parent.forward;
-        rig.AddForce(velocity * localForward, ForceMode.Force);
+        localUp = transform.parent.up;
+
+        rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
 
         //Debug
         Debug.Log("\nVelocity: " + Mathf.Floor(velocity * conversionRate) + " feet per second - Mass: "+ mass/0.001f + "g");
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (gameObject.transform.position.y > 0) { //SE NAO ATINGIU O CHAO
-            liftingForce = Mathf.Sqrt(velocity) * backSpinDrag;
-            rig.AddForce(liftingForce * localForward, ForceMode.Force);
-        }else
-            Destroy(gameObject);
+        liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag; // Força de sustentação
+        rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
+         //if (gameObject.transform.position.y > 0) { //SE NAO ATINGIU O CHAO }
+        //else { }
+            //Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(Vector3.zero, transform.right);
+        Gizmos.DrawLine (Vector3.zero, transform.forward);
     }
 }

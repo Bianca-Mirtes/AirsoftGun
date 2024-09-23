@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backSpinDrag: 0.001
   liftingForce: 0
-  mass: 0.8
+  mass: 0.2
 --- !u!96 &8828809650550558834
 TrailRenderer:
   serializedVersion: 3
