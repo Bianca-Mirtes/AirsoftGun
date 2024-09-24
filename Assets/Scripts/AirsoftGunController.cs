@@ -11,6 +11,9 @@ public class AirsoftGunController : MonoBehaviour
     [Header("GameObjects")]
     public Transform slot;
     public Transform gunBarrel;
+
+    [Header("Time")]
+    [SerializeField][Range(0, 1)] private float time = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,11 @@ public class AirsoftGunController : MonoBehaviour
             shoot(bb1);
         else if (Input.GetButtonDown("Fire2"))
             shoot(bb2);
+    }
+
+    private void FixedUpdate()
+    {
+        Time.timeScale = time;
     }
 
     private void shoot(GameObject bb)

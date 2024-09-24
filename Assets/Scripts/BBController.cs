@@ -5,7 +5,7 @@ using UnityEngine;
 public class BBController : MonoBehaviour
 {
     [Header("Attributes")]
-    [SerializeField] private float backSpinDrag = 0.001f;
+    [SerializeField][Range(0.000f, 0.1f)] private float backSpinDrag = 0.001f;
     
     [Tooltip("Weight in grams")] //(em gramas)
     [SerializeField] [Range(0.2f, 2)] private float mass = 0.2f;
@@ -32,7 +32,7 @@ public class BBController : MonoBehaviour
         localForward = transform.parent.forward;
 
         rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
-        Time.timeScale = 0.1f;
+        
         //Debug
         Debug.Log("\nVelocity: " + Mathf.Floor(velocity * conversionRate) + " feet per second - Mass: "+ mass/0.001f + "g");
     }
