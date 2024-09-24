@@ -147,9 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e31b8ddbfc7c1248aaa209d76260b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backSpinDrag: 0.001
-  liftingForce: 0
-  mass: 0.2
+  backSpinDrag: 0.000000001
+  mass: 0.32
 --- !u!96 &8828809650550558834
 TrailRenderer:
   serializedVersion: 3
@@ -192,7 +191,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.15
+  m_Time: 3
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3

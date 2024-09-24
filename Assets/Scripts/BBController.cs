@@ -6,11 +6,12 @@ public class BBController : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField] private float backSpinDrag = 0.001f;
-    [SerializeField] private float liftingForce;
+    
     [Tooltip("Weight in grams")] //(em gramas)
     [SerializeField] [Range(0.2f, 2)] private float mass = 0.2f;
-    private float velocity = 0f;
 
+    private float velocity = 0f;
+    private float liftingForce;
     private float energyInJoules = 1.49f;
     private float conversionRate = 3.281f; //multiplica m/s por isso para chegar em pés
     private Rigidbody rig;
@@ -29,10 +30,9 @@ public class BBController : MonoBehaviour
         velocity = Mathf.Sqrt((2 * energyInJoules)/mass);
 
         localForward = transform.parent.forward;
-        localUp = transform.parent.up;
 
         rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
-
+        Time.timeScale = 0.1f;
         //Debug
         Debug.Log("\nVelocity: " + Mathf.Floor(velocity * conversionRate) + " feet per second - Mass: "+ mass/0.001f + "g");
     }
@@ -40,15 +40,15 @@ public class BBController : MonoBehaviour
     void FixedUpdate()
     {
         liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag; // Força de sustentação
+        localUp = transform.parent.up;
+        //Vector3 perpendicular = Vector3.Cross(transform.forward, transform.forward); // direção perpendicular
+
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
-         //if (gameObject.transform.position.y > 0) { //SE NAO ATINGIU O CHAO }
-        //else { }
-            //Destroy(gameObject);
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.DrawLine(Vector3.zero, transform.right);
         Gizmos.DrawLine (Vector3.zero, transform.forward);
-    }
+    }*/
 }
