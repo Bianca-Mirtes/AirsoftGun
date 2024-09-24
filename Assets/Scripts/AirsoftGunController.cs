@@ -7,6 +7,7 @@ public class AirsoftGunController : MonoBehaviour
     [Header("BBs")]
     public GameObject bb1;
     public GameObject bb2;
+    public GameObject bb3;
 
     [Header("GameObjects")]
     public Transform slot;
@@ -27,6 +28,11 @@ public class AirsoftGunController : MonoBehaviour
             shoot(bb1);
         else if (Input.GetButtonDown("Fire2"))
             shoot(bb2);
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            shoot(bb3);
+        }
+
     }
 
     private void FixedUpdate()

@@ -461,7 +461,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0}
@@ -629,6 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bb1: {fileID: 5162753622471141806, guid: f1adf39baa5fa544990bf236f73f165b, type: 3}
   bb2: {fileID: 5162753622471141806, guid: fe3a715fcdc7e6d47b212ea569b0e28e, type: 3}
+  bb3: {fileID: 4364194817607968748, guid: 57e6c01883925a6418949a126f3356fc, type: 3}
   slot: {fileID: 2077409162}
   gunBarrel: {fileID: 1813572983}
   time: 1
@@ -691,7 +692,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
