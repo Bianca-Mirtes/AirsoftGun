@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class AirsoftGunController : MonoBehaviour
 {
+    public enum TYPE
+    {
+        SHOTGUN,
+        RIFLE,
+        P1911,
+        GLOCK
+    }
+
+    public TYPE tipo;
+
     [Header("BBs")]
     public GameObject bb1;
     public GameObject bb2;
