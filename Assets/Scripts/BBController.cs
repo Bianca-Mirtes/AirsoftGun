@@ -44,9 +44,4 @@ public class BBController : MonoBehaviour
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
     }
 
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(Vector3.zero, transform.right);
-        Gizmos.DrawLine (Vector3.zero, transform.forward);
-    }*/
 }
