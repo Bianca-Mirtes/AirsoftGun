@@ -25,11 +25,6 @@ public class AirsoftGunController : MonoBehaviour
 
     [Header("Time")]
     [SerializeField][Range(0, 1)] private float time = 1f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -42,7 +37,6 @@ public class AirsoftGunController : MonoBehaviour
         {
             shoot(bb3);
         }
-
     }
 
     private void FixedUpdate()

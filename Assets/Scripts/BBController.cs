@@ -41,7 +41,7 @@ public class BBController : MonoBehaviour
     {
         liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag; // Força de sustentação
         localUp = transform.parent.up;
+        Debug.Log("hop-up: " + liftingForce);
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
     }
-
 }
