@@ -50,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4995920037716950982, guid: fe3a715fcdc7e6d47b212ea569b0e28e, type: 3}
       propertyPath: mass
-      value: 0.24
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 4995920037716950982, guid: fe3a715fcdc7e6d47b212ea569b0e28e, type: 3}
       propertyPath: backSpinDrag
-      value: 0.001
+      value: 0.0001
       objectReference: {fileID: 0}
     - target: {fileID: 5162753622471141806, guid: fe3a715fcdc7e6d47b212ea569b0e28e, type: 3}
       propertyPath: m_Name

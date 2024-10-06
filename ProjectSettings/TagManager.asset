@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CinemachineTarget
+  - Pistol1911
+  - PistolGlock
+  - AK47
+  - Shotgun
   layers:
   - Default
   - TransparentFX

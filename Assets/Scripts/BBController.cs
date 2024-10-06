@@ -5,10 +5,10 @@ using UnityEngine;
 public class BBController : MonoBehaviour
 {
     [Header("Attributes")]
-    [SerializeField][Range(0.0001f, 0.1f)] private float backSpinDrag = 0.001f;
+    [SerializeField][Range(0f, 0.1f)] private float backSpinDrag = 0.001f;
     
     [Tooltip("Weight in grams")] //(em gramas)
-    [SerializeField] [Range(0.2f, 2)] private float mass = 0.2f;
+    [SerializeField] [Range(0.2f, 0.34f)] private float mass = 0.2f;
 
     private float velocity = 0f;
     private float liftingForce;
