@@ -27,7 +27,7 @@ public class AirsoftGunController : MonoBehaviour
     [SerializeField][Range(0, 1)] private float time = 1f;
 
     [Header("Clamp")]
-    [SerializeField]private float clamp = 40f;
+    [SerializeField] private float clamp = 40f;
 
     private ChargerController charger = null;
 
@@ -40,10 +40,10 @@ public class AirsoftGunController : MonoBehaviour
             shoot(bb1);
         else if (Input.GetButtonDown("Fire2"))
             shoot(bb2);
-        /*else if (Input.GetKeyDown(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             shoot(bb3);
-        }*/
+        }
     }
 
     //private void fixClamp(){
@@ -79,8 +79,13 @@ public class AirsoftGunController : MonoBehaviour
 
     private void shoot(GameObject bb)
     {
-        //TODO: checar antes se o charger é nao nulo e se tem bala nele -> metodo charger.getCurrentCapacity()
-        Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
-        //TODO: diminui bala do carregador com o metodo charger.consumeBB()
+        if(charger != null)
+        {
+            if (charger.getCurrentBullets() > 0)
+            {
+                Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
+                charger.consumeBB();
+            }
+        }
     }
 }

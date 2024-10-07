@@ -7,7 +7,7 @@ public class ChargerController : MonoBehaviour
     public TYPE type;
 
     [SerializeField] private int capacity;
-    [SerializeField] private int currentCapacity;
+    [SerializeField] private int currentBullets;
     [SerializeField] private float currentMassBBs;
     // Start is called before the first frame update
     void Start()
@@ -15,18 +15,18 @@ public class ChargerController : MonoBehaviour
         
     }
 
-    public int getCurrentCapacity()
+    public int getCurrentBullets()
     {
-        return currentCapacity;
+        return currentBullets;
     }
 
     public void consumeBB()
     {
-        --currentCapacity;
+        --currentBullets;
     }
 
     public void fullAuto()
     {
-        currentCapacity = capacity;
+        currentBullets = capacity;
     }
 }
