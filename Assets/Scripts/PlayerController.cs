@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -19,14 +20,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             if (currentGun != null)
             {
-                currentGun.checkAndLoadCharger();
-                /*Transform playerUI = transform.GetChild(2).GetChild(0);
-                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + currentGun.GetCharger().getCurrentBullets() +
-                                                                            "/" + currentGun.GetCharger().GetCapacity() + " - " + currentGun.GetCharger().GetMassBB() + "g";
-                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";*/
+                Transform playerUI = transform.GetChild(2).GetChild(0); // get the playerUI
+                currentGun.checkAndLoadCharger(playerUI); 
+                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";
             }
             else
+            {
+                Transform playerUI = transform.GetChild(2).GetChild(0);
+                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
+                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
                 Debug.Log("Sem arma!");
+            }
 
         float scrollInput = Input.mouseScrollDelta.y;
         if (currentGun != null) { 
@@ -89,11 +93,26 @@ public class PlayerController : MonoBehaviour
 
         gun.gameObject.SetActive(false);
 
+        // Reativa a arma atual que foi trocada por outra
+        if(currentGun != null)
+        {
+            GameObject itens = GameObject.Find("ITENS");
+            Transform guns = itens.transform.GetChild(0); // guns
+            for(int jj=0; jj < guns.childCount; jj++)
+            {
+                if (guns.GetChild(jj).gameObject.tag == currentGun.type.ToString())
+                {
+                    guns.GetChild(jj).gameObject.SetActive(true);
+                    break;
+                }
+            }
+        }
+
         //Liga e desliga baseado na enum
-        for (int i = 0; i < guns.Length; i++) {
-            guns[i].gameObject.SetActive(guns[i].type == gun.type);
-            if(guns[i].type == gun.type)
-                currentGun = guns[i];
+        for (int ii = 0; ii < guns.Length; ii++) {
+            guns[ii].gameObject.SetActive(guns[ii].type == gun.type);
+            if(guns[ii].type == gun.type)
+                currentGun = guns[ii];
         }
 
         Debug.Log("Pegou "+ gun.type.ToString());
@@ -103,6 +122,22 @@ public class PlayerController : MonoBehaviour
         //Liga e desliga baseado na enum
         if(currentGun != null){
             if(currentGun.type == charger.type){
+                // Reativa o CARREGADOR atual que foi trocado por outro
+                Debug.Log(charger);
+                if (currentGun.GetCharger() != null)
+                {
+                    GameObject itens = GameObject.Find("ITENS");
+                    Transform chargers = itens.transform.GetChild(1); // chargers
+                    for (int jj = 0; jj < chargers.childCount; jj++)
+                    {
+                        Debug.Log(currentGun.GetCharger().type.ToString());
+                        if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
+                        {
+                            chargers.GetChild(jj).gameObject.SetActive(true);
+                            break;
+                        }
+                    }
+                }
                 currentGun.SetCharger(charger);
                 Debug.Log("Novo carregador");
                 return true;

@@ -4,29 +4,23 @@ using UnityEngine;
 
 public class ChargerController : MonoBehaviour
 {
-    public TYPE type;
 
+    [Header("Infos Gun")]
+    public TYPE type;
     [SerializeField] private int capacity;
     [SerializeField] private int currentBullets;
-    [SerializeField] private float massBBs;
+
+    [Header("BBs")]
+    public GameObject bbPrefab;
 
     private void Start()
     {
-        if(type == TYPE.RIFLE)
-        {
-            massBBs = 0.28f;
-        }
-        if(type == TYPE.P1911 || type == TYPE.GLOCK || type == TYPE.SHOTGUN)
-        {
-            massBBs = 0.2f;
-        }
-
         fullAuto();
     }
 
     public float GetMassBB()
     {
-        return massBBs;
+        return bbPrefab.GetComponent<BBController>().GetMass();
     }
     public int GetCapacity()
     {

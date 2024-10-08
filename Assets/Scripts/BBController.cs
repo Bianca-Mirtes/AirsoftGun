@@ -43,4 +43,9 @@ public class BBController : MonoBehaviour
         localUp = transform.parent.up;
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
     }
+
+    public float GetMass()
+    {
+        return mass;
+    }
 }

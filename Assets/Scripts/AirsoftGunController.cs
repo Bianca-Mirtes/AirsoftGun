@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public enum TYPE{
@@ -12,11 +13,6 @@ public enum TYPE{
 public class AirsoftGunController : MonoBehaviour
 {
     public TYPE type;
-
-    [Header("BBs")]
-    public GameObject bb1;
-    public GameObject bb2;
-    public GameObject bb3;
 
     [Header("GameObjects")]
     public Transform slot;
@@ -37,7 +33,15 @@ public class AirsoftGunController : MonoBehaviour
     {
         //fixClamp();
         if (Input.GetButtonDown("Fire1"))
-            shoot(bb1);
+        {
+            if(charger != null)
+            {
+                shoot(charger.bbPrefab);
+                Transform playerUI = GameObject.Find("PlayerUI").transform;
+                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                            "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
+            }
+        }
     }
 
     public ChargerController GetCharger()
@@ -74,11 +78,18 @@ public class AirsoftGunController : MonoBehaviour
         transform.LookAt(aimLookAt);
     }
 
-    public void checkAndLoadCharger(){
+    public void checkAndLoadCharger(Transform playerUI){
         if (charger != null)
+        {
             charger.fullAuto();
+            playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                                        "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
+        }
         else
+        {
+            playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
             Debug.Log("Sem carregador!");
+        }
     }
 
     private void shoot(GameObject bb)
