@@ -38,12 +38,11 @@ public class AirsoftGunController : MonoBehaviour
         //fixClamp();
         if (Input.GetButtonDown("Fire1"))
             shoot(bb1);
-        else if (Input.GetButtonDown("Fire2"))
-            shoot(bb2);
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            shoot(bb3);
-        }
+    }
+
+    public ChargerController GetCharger()
+    {
+        return charger;
     }
 
     //private void fixClamp(){

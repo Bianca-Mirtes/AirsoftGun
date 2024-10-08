@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -20,48 +21,18 @@ public class PlayerController : MonoBehaviour
         //CARREGAR
         if (Input.GetKeyDown(KeyCode.F))
             if (currentGun != null)
+            {
                 currentGun.checkAndLoadCharger();
+                /*Transform playerUI = transform.GetChild(2).GetChild(0);
+                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + currentGun.GetCharger().getCurrentBullets() +
+                                                                            "/" + currentGun.GetCharger().GetCapacity() + " - " + currentGun.GetCharger().GetMassBB() + "g";
+                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";*/
+            }
             else
                 Debug.Log("Sem arma!");
-
         checkBox();
     }
 
-    //private void OnTriggerStay(Collider other){
-    //    if (other.gameObject.tag.Equals("Pistol1911"))
-    //    {
-    //        if(Input.GetKeyDown(KeyCode.E))
-    //        {
-    //            other.gameObject.transform.parent = transform;
-    //            other.gameObject.transform.position = Vector3.zero;
-    //        }
-    //    }
-    //    if (other.gameObject.tag.Equals("PistolGlock"))
-    //    {
-    //        if (Input.GetKeyDown(KeyCode.E))
-    //        {
-    //            other.gameObject.transform.parent = transform;
-    //            other.gameObject.transform.position = Vector3.zero;
-    //        }
-
-    //    }
-    //    if (other.gameObject.tag.Equals("AK47"))
-    //    {
-    //        if (Input.GetKeyDown(KeyCode.E))
-    //        {
-    //            other.gameObject.transform.parent = transform;
-    //            other.gameObject.transform.position = Vector3.zero;
-    //        }
-    //    }
-    //    if (other.gameObject.tag.Equals("Shotgun"))
-    //    {
-    //        if (Input.GetKeyDown(KeyCode.E))
-    //        {
-    //            other.gameObject.transform.parent = transform;
-    //            other.gameObject.transform.position = Vector3.zero;
-    //        }
-    //    }
-    //}
 
     Vector3 boxSize = new Vector3(1, 1.5f, 1);
     Vector3 direction = Vector3.forward;

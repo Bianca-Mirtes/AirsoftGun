@@ -8,11 +8,27 @@ public class ChargerController : MonoBehaviour
 
     [SerializeField] private int capacity;
     [SerializeField] private int currentBullets;
-    [SerializeField] private float currentMassBBs;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float massBBs;
+
+    private void Start()
     {
-        
+        if(type == TYPE.RIFLE)
+        {
+            massBBs = 0.28f;
+        }
+        if(type == TYPE.P1911 || type == TYPE.GLOCK || type == TYPE.SHOTGUN)
+        {
+            massBBs = 0.2f;
+        }
+    }
+
+    public float GetMassBB()
+    {
+        return massBBs;
+    }
+    public int GetCapacity()
+    {
+        return capacity;
     }
 
     public int getCurrentBullets()
