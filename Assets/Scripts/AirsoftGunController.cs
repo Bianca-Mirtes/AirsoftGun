@@ -29,7 +29,7 @@ public class AirsoftGunController : MonoBehaviour
     [Header("Clamp")]
     [SerializeField] private float clamp = 40f;
 
-    private ChargerController charger = null;
+    [SerializeField] private ChargerController charger = null;
 
 
     // Update is called once per frame
@@ -43,6 +43,11 @@ public class AirsoftGunController : MonoBehaviour
     public ChargerController GetCharger()
     {
         return charger;
+    }
+
+    public void SetCharger(ChargerController charger)
+    {
+        this.charger = charger;
     }
 
     //private void fixClamp(){

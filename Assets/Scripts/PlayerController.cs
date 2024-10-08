@@ -5,15 +5,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private AirsoftGunController firstGun = null;
     [SerializeField] private AirsoftGunController currentGun = null;
-
     [SerializeField] private AirsoftGunController[] guns;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        selectGun(firstGun);
+    private void Start(){
+        for (int i = 0; i < guns.Length; i++)
+            guns[i].gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,58 +27,91 @@ public class PlayerController : MonoBehaviour
             }
             else
                 Debug.Log("Sem arma!");
+
+        float scrollInput = Input.mouseScrollDelta.y;
+        if (currentGun != null) { 
+            if (scrollInput != 0) { 
+                Debug.Log("Rolagem do scroll: " + scrollInput);
+            }
+        }
+
         checkBox();
     }
 
 
-    Vector3 boxSize = new Vector3(1, 1.5f, 1);
-    Vector3 direction = Vector3.forward;
+    Vector3 boxSize = new Vector3(1, 1.6f, 1.5f);
     [SerializeField] private float distancia = 1f;
 
     //CHECA PROXIMIDADE COM ITENS
     private void checkBox(){
-        RaycastHit hit;
-
         //PRESSIONA BOTAO DE COLETA
         if (Input.GetKeyDown(KeyCode.E)){
 
             //CHECA ARMAS
-            if (Physics.BoxCast(transform.position, boxSize / 2, direction, out hit, transform.rotation, distancia)){
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Gun")){
-                    AirsoftGunController gun = hit.collider.gameObject.GetComponent<AirsoftGunController>();
+            //Vector3 boxPosition = transform.position + transform.forward * distancia;
+            Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
+            Collider[] hitsGuns = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Gun"));
+            foreach (Collider hit in hitsGuns){
+                AirsoftGunController gun = hit.gameObject.GetComponent<AirsoftGunController>();
 
+                if (gun != null){
                     selectGun(gun);
-                    Destroy(hit.collider.gameObject);
+                    hit.gameObject.SetActive(false);
                 }
             }
 
             //CHECA CARREGADORES
-            //if (Physics.BoxCast(transform.position, boxSize / 2, direction, out hit, transform.rotation, distancia)){
-            //    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Chargers")){
-            //        
-            //    }
-            //}
+            Collider[] hitsChargers = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Charger"));
+            foreach (Collider hit in hitsChargers){
+                ChargerController charger = hit.gameObject.GetComponent<ChargerController>();
+
+                if (charger != null){
+                    bool selected = selectCharger(charger);
+                    if (selected)
+                        hit.gameObject.SetActive(false);
+                }
+            }
         }
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Vector3 boxCenter = transform.position + transform.rotation * (direction * (distancia / 2));
-
-        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, boxSize);
+        Gizmos.color = Color.green;
+        Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
+        Gizmos.matrix = Matrix4x4.TRS(boxPosition, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, boxSize);
     }
 
     private void selectGun(AirsoftGunController gun){
+        //Evita pegar a atual
+        if (currentGun != null && currentGun.type == gun.type)
+            return;
+
+        gun.gameObject.SetActive(false);
 
         //Liga e desliga baseado na enum
-        for (int i = 0; i < guns.Length; i++)
+        for (int i = 0; i < guns.Length; i++) {
             guns[i].gameObject.SetActive(guns[i].type == gun.type);
-        currentGun = gun;
-        Debug.Log("Pegou "+ gun.type.ToString());
+            if(guns[i].type == gun.type)
+                currentGun = guns[i];
+        }
 
-        //...
-        //currentGun = ...
+        Debug.Log("Pegou "+ gun.type.ToString());
+    }
+
+    private bool selectCharger(ChargerController charger){
+        //Liga e desliga baseado na enum
+        if(currentGun != null){
+            if(currentGun.type == charger.type){
+                currentGun.SetCharger(charger);
+                Debug.Log("Novo carregador");
+                return true;
+            }else
+                Debug.Log("Carregador incompatível");
+        }
+        else
+            Debug.Log("Sem arma");
+
+        return false;
     }
 }

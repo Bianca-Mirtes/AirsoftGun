@@ -20,6 +20,8 @@ public class ChargerController : MonoBehaviour
         {
             massBBs = 0.2f;
         }
+
+        fullAuto();
     }
 
     public float GetMassBB()
