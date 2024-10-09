@@ -38,15 +38,13 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Rolagem do scroll: " + scrollInput);
             }
         }
-
         checkBox();
     }
-
 
     Vector3 boxSize = new Vector3(1, 1.6f, 1.5f);
     [SerializeField] private float distancia = 1f;
 
-    //CHECA PROXIMIDADE COM ITENS
+    // CHECA PROXIMIDADE COM ITENS
     private void checkBox(){
         //PRESSIONA BOTAO DE COLETA
         if (Input.GetKeyDown(KeyCode.E)){
@@ -64,7 +62,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            //CHECA CARREGADORES
+            // CHECA CARREGADORES
             Collider[] hitsChargers = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Charger"));
             foreach (Collider hit in hitsChargers){
                 ChargerController charger = hit.gameObject.GetComponent<ChargerController>();
@@ -94,16 +92,30 @@ public class PlayerController : MonoBehaviour
         gun.gameObject.SetActive(false);
 
         // Reativa a arma atual que foi trocada por outra
-        if(currentGun != null)
+        if (currentGun != null)
         {
             GameObject itens = GameObject.Find("ITENS");
             Transform guns = itens.transform.GetChild(0); // guns
-            for(int jj=0; jj < guns.childCount; jj++)
+            for (int jj = 0; jj < guns.childCount; jj++)
             {
                 if (guns.GetChild(jj).gameObject.tag == currentGun.type.ToString())
                 {
                     guns.GetChild(jj).gameObject.SetActive(true);
                     break;
+                }
+            }
+            // Reativa o CARREGADOR atual que foi trocado por outro
+            if (currentGun.GetCharger() != null)
+            {
+                Transform chargers = itens.transform.GetChild(1); // chargers
+                for (int jj = 0; jj < chargers.childCount; jj++)
+                {
+                    Debug.Log(currentGun.GetCharger().type.ToString());
+                    if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
+                    {
+                        chargers.GetChild(jj).gameObject.SetActive(true);
+                        break;
+                    }
                 }
             }
         }
@@ -122,22 +134,6 @@ public class PlayerController : MonoBehaviour
         //Liga e desliga baseado na enum
         if(currentGun != null){
             if(currentGun.type == charger.type){
-                // Reativa o CARREGADOR atual que foi trocado por outro
-                Debug.Log(charger);
-                if (currentGun.GetCharger() != null)
-                {
-                    GameObject itens = GameObject.Find("ITENS");
-                    Transform chargers = itens.transform.GetChild(1); // chargers
-                    for (int jj = 0; jj < chargers.childCount; jj++)
-                    {
-                        Debug.Log(currentGun.GetCharger().type.ToString());
-                        if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
-                        {
-                            chargers.GetChild(jj).gameObject.SetActive(true);
-                            break;
-                        }
-                    }
-                }
                 currentGun.SetCharger(charger);
                 Debug.Log("Novo carregador");
                 return true;

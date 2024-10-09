@@ -27,13 +27,13 @@ public class AirsoftGunController : MonoBehaviour
 
     [SerializeField] private ChargerController charger = null;
 
-
     // Update is called once per frame
     void Update()
     {
         //fixClamp();
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(KeyCode.V))
         {
+            Debug.Log(charger);
             if(charger != null)
             {
                 shoot(charger.bbPrefab);
