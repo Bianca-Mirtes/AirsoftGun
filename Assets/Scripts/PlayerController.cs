@@ -8,10 +8,36 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private AirsoftGunController currentGun = null;
     [SerializeField] private AirsoftGunController[] guns;
+    [SerializeField] private Material coberturaGuns;
 
     private void Start(){
-        for (int i = 0; i < guns.Length; i++)
-            guns[i].gameObject.SetActive(false);
+        for (int ii = 0; ii < guns.Length; ii++)
+            guns[ii].gameObject.SetActive(false);
+
+        GameObject itens = GameObject.Find("ITENS");
+        Transform Guns = itens.transform.GetChild(0); // guns
+        for (int jj = 0; jj < Guns.childCount; jj++)
+        {
+            Transform gun = Guns.GetChild(jj).GetChild(0);
+            gun.GetComponent<MeshRenderer>().material = coberturaGuns;
+            if (gun.childCount != 0)
+            {
+                for (int kk=0; kk < gun.childCount; kk++)
+                    gun.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
+            }
+        }
+
+        Transform chargers = itens.transform.GetChild(1); // Chargers
+        for (int jj = 0; jj < Guns.childCount; jj++)
+        {
+            Transform charger = chargers.GetChild(jj).GetChild(0);
+            charger.GetComponent<MeshRenderer>().material = coberturaGuns;
+            if (charger.childCount != 0)
+            {
+                for (int kk = 0; kk < charger.childCount; kk++)
+                    charger.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -50,7 +76,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)){
 
             //CHECA ARMAS
-            //Vector3 boxPosition = transform.position + transform.forward * distancia;
             Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
             Collider[] hitsGuns = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Gun"));
             foreach (Collider hit in hitsGuns){
@@ -80,7 +105,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.green;
         Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
         Gizmos.matrix = Matrix4x4.TRS(boxPosition, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, boxSize);
+        Gizmos.DrawWireCube(Vector3.up, boxSize);
     }
 
     private void selectGun(AirsoftGunController gun){

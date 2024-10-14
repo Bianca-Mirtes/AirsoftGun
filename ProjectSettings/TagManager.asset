@@ -9,11 +9,13 @@ TagManager:
   - RIFLE
   - P1911
   - GLOCK
+  - AK47
+  - PistolGlock
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Floor
   - Water
   - UI
   - Trail
