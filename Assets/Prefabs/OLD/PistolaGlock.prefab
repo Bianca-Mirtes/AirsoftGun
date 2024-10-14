@@ -117,7 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   slot: {fileID: 0}
-  gunBarrel: {fileID: 5608166517700633616}
+  gunBarrel: {fileID: 0}
   aimLookAt: {fileID: 0}
   time: 1
   clamp: 40
@@ -170,8 +170,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.022865342, y: 0.06427608, z: 0.16908956}
   m_Center: {x: 0, y: 0.029315883, z: 0.12}
---- !u!4 &5608166517700633616 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -3294486903813158705, guid: 6096063b8fe80bb448f6a05e4c071b6e, type: 3}
-  m_PrefabInstance: {fileID: 2275325108988112095}
-  m_PrefabAsset: {fileID: 0}

@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f6b9d914c46574e854890d65602414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  type: 0
   slot: {fileID: 0}
   gunBarrel: {fileID: 8438323128387938193}
   aimLookAt: {fileID: 0}

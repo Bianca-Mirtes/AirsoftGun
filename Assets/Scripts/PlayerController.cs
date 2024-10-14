@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
 
                 if (gun != null){
                     selectGun(gun);
-                    hit.gameObject.SetActive(false);
                 }
             }
 
@@ -100,6 +99,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (guns.GetChild(jj).gameObject.tag == currentGun.type.ToString())
                 {
+                    guns.GetChild(jj).GetComponent<AirsoftGunController>().SetCharger(null);
                     guns.GetChild(jj).gameObject.SetActive(true);
                     break;
                 }
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
                     Debug.Log(currentGun.GetCharger().type.ToString());
                     if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
                     {
+                        chargers.GetChild(jj).GetComponent<ChargerController>().fullAuto(); //reseta ultimo carregador ao trocar de arma
                         chargers.GetChild(jj).gameObject.SetActive(true);
                         break;
                     }

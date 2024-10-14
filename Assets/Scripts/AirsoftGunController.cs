@@ -33,13 +33,13 @@ public class AirsoftGunController : MonoBehaviour
         //fixClamp();
         if (Input.GetKeyDown(KeyCode.V))
         {
-            Debug.Log(charger);
+            //Debug.Log(charger);
             if(charger != null)
             {
                 shoot(charger.bbPrefab);
-                Transform playerUI = GameObject.Find("PlayerUI").transform;
-                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
-                                                            "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
+                RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
+                playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                                        "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
             }
         }
     }
@@ -94,13 +94,11 @@ public class AirsoftGunController : MonoBehaviour
 
     private void shoot(GameObject bb)
     {
-        if(charger != null)
+
+        if (charger.getCurrentBullets() > 0)
         {
-            if (charger.getCurrentBullets() > 0)
-            {
-                Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
-                charger.consumeBB();
-            }
+            Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
+            charger.consumeBB();
         }
     }
 }
