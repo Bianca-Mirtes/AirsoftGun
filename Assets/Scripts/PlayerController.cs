@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private int health = 100;
     [SerializeField] public AirsoftGunController currentGun = null;
     [SerializeField] private AirsoftGunController[] guns;
     [SerializeField] private Material coberturaGuns;
@@ -49,6 +52,12 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if(health <= 0)
+        {
+            Transform playerUI = transform.GetChild(2).GetChild(0);
+            FindObjectOfType<GameController>().GameOver(playerUI);
+            return;
+        }
         //CARREGAR
         if (Input.GetKeyDown(KeyCode.F)) {
             if (currentGun == null)
@@ -183,5 +192,15 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Sem arma");
 
         return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Equals("BB"))
+        {
+            health -= 10;
+            Slider slider = transform.GetChild(2).GetChild(0).GetChild(4).GetComponent<Slider>();
+            slider.value -= 10;
+        }
     }
 }

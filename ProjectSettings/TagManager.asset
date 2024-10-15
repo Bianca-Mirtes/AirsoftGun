@@ -11,6 +11,8 @@ TagManager:
   - GLOCK
   - AK47
   - PistolGlock
+  - Shotgun
+  - BB
   layers:
   - Default
   - TransparentFX

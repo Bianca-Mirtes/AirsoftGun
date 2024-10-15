@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 8828809650550558834}
   m_Layer: 0
   m_Name: BB2
-  m_TagString: Untagged
+  m_TagString: BB
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -358,8 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e31b8ddbfc7c1248aaa209d76260b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backSpinDrag: 0.001
   mass: 0.28
+  backSpinDrag: 0.001
 --- !u!96 &8828809650550558834
 TrailRenderer:
   serializedVersion: 3
