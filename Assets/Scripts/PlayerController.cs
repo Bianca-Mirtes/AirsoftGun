@@ -11,9 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Material coberturaGuns;
 
     private void Start(){
+        // inicializa todas as armas como desativadas (player começa com nada)
         for (int ii = 0; ii < guns.Length; ii++)
             guns[ii].gameObject.SetActive(false);
 
+        // shader material guns
         GameObject itens = GameObject.Find("ITENS");
         Transform Guns = itens.transform.GetChild(0); // guns
         for (int jj = 0; jj < Guns.childCount; jj++)
@@ -26,7 +28,7 @@ public class PlayerController : MonoBehaviour
                     gun.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
             }
         }
-
+        // shader material chargers
         Transform chargers = itens.transform.GetChild(1); // Chargers
         for (int jj = 0; jj < Guns.childCount; jj++)
         {
@@ -38,25 +40,32 @@ public class PlayerController : MonoBehaviour
                     charger.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
             }
         }
+
+        // player inicia sem nada
+        Transform playerUI = transform.GetChild(2).GetChild(0);
+        playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
+        playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
     }
 
     // Update is called once per frame
-    void Update(){
+    void Update() {
         //CARREGAR
-        if (Input.GetKeyDown(KeyCode.F))
-            if (currentGun != null)
-            {
-                Transform playerUI = transform.GetChild(2).GetChild(0); // get the playerUI
-                currentGun.checkAndLoadCharger(playerUI); 
-                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";
-            }
-            else
+        if (Input.GetKeyDown(KeyCode.F)) {
+            if (currentGun == null)
             {
                 Transform playerUI = transform.GetChild(2).GetChild(0);
                 playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
                 playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
                 Debug.Log("Sem arma!");
             }
+            if(currentGun.GetComponent<AirsoftGunController>().GetCharger() != null)
+            {
+                Transform playerUI = transform.GetChild(2).GetChild(0);
+                currentGun.checkAndLoadCharger(playerUI);
+            }
+        }
+
+        // LARGAR OBJETOS
 
         float scrollInput = Input.mouseScrollDelta.y;
         if (currentGun != null) { 
@@ -77,17 +86,19 @@ public class PlayerController : MonoBehaviour
 
             //CHECA ARMAS
             Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
-            Collider[] hitsGuns = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Gun"));
+            Collider[] hitsGuns = Physics.OverlapBox(boxPosition, boxSize, transform.rotation, LayerMask.GetMask("Gun"));
             foreach (Collider hit in hitsGuns){
                 AirsoftGunController gun = hit.gameObject.GetComponent<AirsoftGunController>();
 
                 if (gun != null){
                     selectGun(gun);
+                    Transform playerUI = transform.GetChild(2).GetChild(0); // get the playerUI
+                    playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";
                 }
             }
 
             // CHECA CARREGADORES
-            Collider[] hitsChargers = Physics.OverlapBox(boxPosition, boxSize / 2, transform.rotation, LayerMask.GetMask("Charger"));
+            Collider[] hitsChargers = Physics.OverlapBox(boxPosition, boxSize, transform.rotation, LayerMask.GetMask("Charger"));
             foreach (Collider hit in hitsChargers){
                 ChargerController charger = hit.gameObject.GetComponent<ChargerController>();
 

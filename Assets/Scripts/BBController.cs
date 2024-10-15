@@ -30,8 +30,6 @@ public class BBController : MonoBehaviour
         velocity = Mathf.Sqrt((2 * energyInJoules)/mass);
 
         localForward = transform.parent.forward;
-
-        rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
         
         //Debug
         Debug.Log("\nVelocity: " + Mathf.Floor(velocity * conversionRate) + " feet per second - Mass: "+ mass/0.001f + "g");
@@ -39,11 +37,12 @@ public class BBController : MonoBehaviour
 
     void Update()
     {
+        rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
+
         liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag; // Força de sustentação
         localUp = transform.parent.up;
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
     }
-
     public float GetMass()
     {
         return mass;

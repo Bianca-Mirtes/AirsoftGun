@@ -13,6 +13,8 @@ public enum TYPE{
 public class AirsoftGunController : MonoBehaviour
 {
     public TYPE type;
+    float rpm = 600; // 600 rotações por minuto
+    float nextTimeForFire = 0f;
 
     [Header("GameObjects")]
     public Transform slot;
@@ -31,15 +33,13 @@ public class AirsoftGunController : MonoBehaviour
     void Update()
     {
         //fixClamp();
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeForFire)
         {
             //Debug.Log(charger);
             if(charger != null)
             {
+                nextTimeForFire = Time.time + 60f / rpm; // calcula o delay em segundos baseado no rpm
                 shoot(charger.bbPrefab);
-                RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
-                playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
-                                                                        "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
             }
         }
     }
@@ -99,6 +99,9 @@ public class AirsoftGunController : MonoBehaviour
         {
             Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
             charger.consumeBB();
+            RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
+            playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                                    "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
         }
     }
 }

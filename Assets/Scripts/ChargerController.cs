@@ -37,6 +37,11 @@ public class ChargerController : MonoBehaviour
         --currentBullets;
     }
 
+    public void consumeBB(int value)
+    {
+        currentBullets -= value;
+    }
+
     public void fullAuto()
     {
         currentBullets = capacity;
