@@ -193,14 +193,23 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag.Equals("BB"))
         {
             health -= 10;
             Slider slider = transform.GetChild(2).GetChild(0).GetChild(4).GetComponent<Slider>();
             slider.value -= 10;
+
+            Debug.Log("Player levou tiro");
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Equals("Victory"))
+        {
+            Transform playerUI = transform.GetChild(2).GetChild(0);
+            FindObjectOfType<GameController>().Victory(playerUI);
         }
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - PistolGlock
   - Shotgun
   - BB
+  - Victory
   layers:
   - Default
   - TransparentFX

@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] private float distanceForAttack = 15f, distanceForAttenction = 25f;
     private bool isDead = false;
+    private float timeForFire = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,11 @@ public class EnemyController : MonoBehaviour
     {
         if (!isDead)
         {
+            if (health <= 0){
+                ani.SetBool("isAimingRifle", false);
+                Dead();
+            }
+
             float distanceForPlayer = Vector3.Distance(transform.position, player.position);
             if (distanceForPlayer <= distanceForAttenction)
                 AimingRifle();
@@ -41,14 +47,9 @@ public class EnemyController : MonoBehaviour
                 Firing();
             else
                 ani.SetBool("isFiringGun", false);
-
-            if(health <= 0)
-                Dead();
             if (rifle.getCurrentBBs() <= 0)
                 ReloadingGun();
 
-            while (ani.GetBool("isFiringGun"))
-                rifle.shoot();
         }
     }
 
@@ -60,7 +61,16 @@ public class EnemyController : MonoBehaviour
 
     public void Firing()
     {
-        ani.SetBool("isFiringGun", true);
+        if(timeForFire <= 0)
+        {
+            ani.SetBool("isFiringGun", true);
+            rifle.shoot();
+            timeForFire = 0.8f;
+        }
+        else
+        {
+            timeForFire -= Time.deltaTime;
+        }
     }
 
     public void ReloadingGun()
@@ -72,16 +82,18 @@ public class EnemyController : MonoBehaviour
     public void Dead()
     {
         transform.GetChild(2).gameObject.SetActive(false);
-        ani.SetBool("isDead", true);
+        ani.SetTrigger("isDead");
         isDead = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag.Equals("BB"))
         {
             health -= 10;
-            ani.SetBool("isDamage", true);
+            ani.SetTrigger("isDamage");
+            Debug.Log("Acertou o inimigo");
         }
     }
 }

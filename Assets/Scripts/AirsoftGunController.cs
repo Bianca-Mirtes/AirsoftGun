@@ -39,7 +39,7 @@ public class AirsoftGunController : MonoBehaviour
     void Update()
     {
         //fixClamp();
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeForFire)
+        if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.V) && Time.time >= nextTimeForFire)
         {
             //Debug.Log(charger);
             if(charger != null)
