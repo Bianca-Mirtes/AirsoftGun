@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private AirsoftGunController currentGun = null;
+    [SerializeField] public AirsoftGunController currentGun = null;
     [SerializeField] private AirsoftGunController[] guns;
     [SerializeField] private Material coberturaGuns;
 
@@ -69,8 +69,8 @@ public class PlayerController : MonoBehaviour
 
         float scrollInput = Input.mouseScrollDelta.y;
         if (currentGun != null) { 
-            if (scrollInput != 0) { 
-                Debug.Log("Rolagem do scroll: " + scrollInput);
+            if (scrollInput != 0) {
+                currentGun.changeHopUp(scrollInput);
             }
         }
         checkBox();
@@ -104,8 +104,10 @@ public class PlayerController : MonoBehaviour
 
                 if (charger != null){
                     bool selected = selectCharger(charger);
-                    if (selected)
+                    if (selected) { 
                         hit.gameObject.SetActive(false);
+                        currentGun.resetHopUp();
+                    }
                 }
             }
         }

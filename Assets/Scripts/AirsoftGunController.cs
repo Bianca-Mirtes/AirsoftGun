@@ -12,6 +12,9 @@ public enum TYPE{
 
 public class AirsoftGunController : MonoBehaviour
 {
+    [Header("Attributes")]
+    [SerializeField][Range(0f, 0.1f)] private float backSpinDrag;
+
     public TYPE type;
     float rpm = 600; // 600 rotações por minuto
     float nextTimeForFire = 0f;
@@ -20,14 +23,17 @@ public class AirsoftGunController : MonoBehaviour
     public Transform slot;
     public Transform gunBarrel;
     public Transform aimLookAt;
+    public GameObject chargerMesh;
 
     [Header("Time")]
     [SerializeField][Range(0, 1)] private float time = 1f;
 
-    [Header("Clamp")]
-    [SerializeField] private float clamp = 40f;
-
     [SerializeField] private ChargerController charger = null;
+
+    private void Start()
+    {
+        //StartCoroutine(SineRotationLoop());
+    }
 
     // Update is called once per frame
     void Update()
@@ -42,6 +48,28 @@ public class AirsoftGunController : MonoBehaviour
                 shoot(charger.bbPrefab);
             }
         }
+
+        chargerMesh.SetActive(charger != null);
+        lookAtCenter();
+    }
+
+    public void resetHopUp()
+    {
+        backSpinDrag = 0.01f;
+    }
+
+    public void changeHopUp(float num)
+    {
+        if (num > 0)
+        {
+            backSpinDrag = Mathf.Min(backSpinDrag + 0.01f, 0.1f);
+        }
+        else
+        {
+            backSpinDrag = Mathf.Max(backSpinDrag - 0.01f, 0f);
+        }
+        charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
+        Debug.Log(backSpinDrag);
     }
 
     public ChargerController GetCharger()
@@ -54,28 +82,33 @@ public class AirsoftGunController : MonoBehaviour
         this.charger = charger;
     }
 
-    //private void fixClamp(){
-    //    Quaternion rotation = gameObject.transform.rotation;
-    //    Vector3 eulerAngles = rotation.eulerAngles;
-
-    //    if (eulerAngles.z > 180)
-    //        eulerAngles.z -= 360;
-
-    //    if (eulerAngles.z > clamp)
-    //        eulerAngles.z = clamp;
-    //    if (eulerAngles.z < -clamp)
-    //        eulerAngles.z = -clamp;
-    //    Quaternion newRotation = Quaternion.Euler(eulerAngles);
-    //    transform.rotation = newRotation;
-    //}
-
     private void FixedUpdate()
     {
-        lookAtCenter();
+        
         Time.timeScale = time;
     }
     private void lookAtCenter(){
         transform.LookAt(aimLookAt);
+    }
+
+
+    //PRA VERSAO DOIS
+    public float rotationRange = 2f;
+    private IEnumerator SineRotationLoop()
+    {
+        float time = 0f;
+
+        while (true)
+        {
+            time += Time.deltaTime;
+
+            float rotationX = Mathf.Sin(time) * rotationRange;
+            float rotationY = Mathf.Sin(time) * rotationRange;
+            float rotationZ = gameObject.transform.localRotation.eulerAngles.z;
+            gameObject.transform.localRotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+
+            yield return null;
+        }
     }
 
     public void checkAndLoadCharger(Transform playerUI){
@@ -98,6 +131,7 @@ public class AirsoftGunController : MonoBehaviour
         if (charger.getCurrentBullets() > 0)
         {
             Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
+
             charger.consumeBB();
             RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
             playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +

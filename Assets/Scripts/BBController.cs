@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BBController : MonoBehaviour
 {
-    [Header("Attributes")]
-    [SerializeField][Range(0f, 0.1f)] private float backSpinDrag = 0.001f;
     
     [Tooltip("Weight in grams")] //(em gramas)
     [SerializeField] [Range(0.2f, 0.34f)] private float mass = 0.2f;
@@ -18,6 +16,7 @@ public class BBController : MonoBehaviour
 
     private Vector3 localForward;
     private Vector3 localUp;
+    public float backSpinDrag;
 
     void Start()
     {
@@ -35,11 +34,11 @@ public class BBController : MonoBehaviour
         Debug.Log("\nVelocity: " + Mathf.Floor(velocity * conversionRate) + " feet per second - Mass: "+ mass/0.001f + "g");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         rig.AddForce(velocity * localForward, ForceMode.Force); // velocidade linear
 
-        liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag; // Força de sustentação
+        liftingForce = Mathf.Sqrt(rig.velocity.magnitude) * backSpinDrag * 100; // Força de sustentação
         localUp = transform.parent.up;
         rig.AddForce(liftingForce * localUp * Time.deltaTime, ForceMode.Force); // velocidade angular (backspin)
     }
