@@ -23,7 +23,6 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
-        player = GameObject.FindWithTag("Player").transform;
         rifle.SetCharger(charge);
     }
 
@@ -37,7 +36,11 @@ public class EnemyController : MonoBehaviour
                 return;
             }
 
-            //transform.GetChild(2).LookAt(player);
+            //transform.LookAt(player);
+
+            Vector3 direction = new Vector3(player.position.x, transform.position.y, player.position.z) - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation;
 
             float distanceForPlayer = Vector3.Distance(transform.position, player.position);
             if (distanceForPlayer <= distanceForAttenction)

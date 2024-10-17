@@ -46,4 +46,12 @@ public class BBController : MonoBehaviour
     {
         return mass;
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag.Equals("Untaged"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
