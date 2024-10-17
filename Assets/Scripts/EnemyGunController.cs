@@ -24,11 +24,7 @@ public class EnemyGunController : MonoBehaviour
 
     public void shoot()
     {
-
-        if (charger.getCurrentBullets() > 0)
-        {
-            Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel);
-            charger.consumeBB();
-        }
+        Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel);
+        charger.consumeBB();
     }
 }

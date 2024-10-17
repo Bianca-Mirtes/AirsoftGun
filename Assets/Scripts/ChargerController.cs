@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChargerController : MonoBehaviour
 {
@@ -15,7 +17,7 @@ public class ChargerController : MonoBehaviour
 
     private void Start()
     {
-        fullAuto();
+        currentBullets = capacity;
     }
 
     public float GetMassBB()
@@ -42,8 +44,25 @@ public class ChargerController : MonoBehaviour
         currentBullets -= value;
     }
 
-    public void fullAuto()
+    public void Reaload()
     {
-        currentBullets = capacity;
+        Transform slots = GameObject.FindWithTag("Slots").transform;
+        for (int ii = 0; ii < slots.childCount; ii++)
+        {
+            Image slot = slots.GetChild(ii).GetComponent<Image>();
+            if (slot.sprite.name == "AmmoBox")
+            {
+                if (type == TYPE.SHOTGUN)
+                    currentBullets += 6;
+                if (type == TYPE.GLOCK)
+                    currentBullets += 11;
+                if (type == TYPE.P1911)
+                    currentBullets += 15;
+                if (type == TYPE.RIFLE)
+                    currentBullets += 50;
+                slot.sprite = null;
+                break;
+            }
+        }
     }
 }

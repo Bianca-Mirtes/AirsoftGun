@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     private void Update()
     {
         if (isEndGame)
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.I))
                 ResetGame();
     }
 

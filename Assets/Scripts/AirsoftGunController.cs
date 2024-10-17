@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TYPE{
     GLOCK,
@@ -24,15 +26,26 @@ public class AirsoftGunController : MonoBehaviour
     public Transform gunBarrel;
     public Transform aimLookAt;
     public GameObject chargerMesh;
+    [SerializeField] bool fullauto = false;
 
     [Header("Time")]
     [SerializeField][Range(0, 1)] private float time = 1f;
 
     [SerializeField] private ChargerController charger = null;
 
-    private void Start()
+    public bool getfullauto()
     {
-        //StartCoroutine(SineRotationLoop());
+        return fullauto;
+    }
+
+    public float GetBackspindrag()
+    {
+        return backSpinDrag;
+    }
+
+    public void setfullauto(bool value)
+    {
+        fullauto = value;
     }
 
     // Update is called once per frame
@@ -42,10 +55,6 @@ public class AirsoftGunController : MonoBehaviour
         {
             if(charger != null)
             {
-                gunBarrel.GetComponent<AudioSource>().Play();
-                if (type == TYPE.SHOTGUN)
-                    gunBarrel.parent.GetChild(6).GetComponent<AudioSource>().PlayDelayed(0.4f);
-
                 nextTimeForFire = Time.time + 60f / rpm; // calcula o delay em segundos baseado no rpm
                 shoot(charger.bbPrefab);
             }
@@ -65,8 +74,10 @@ public class AirsoftGunController : MonoBehaviour
             backSpinDrag = Mathf.Min(backSpinDrag + 0.01f, 0.1f);
         else
             backSpinDrag = Mathf.Max(backSpinDrag - 0.01f, 0f);
+
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
-        Debug.Log(backSpinDrag);
+        Transform playerUI = transform.GetChild(2).GetChild(0);
+        playerUI.GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + backSpinDrag;
     }
 
     public ChargerController GetCharger()
@@ -111,38 +122,38 @@ public class AirsoftGunController : MonoBehaviour
     public void checkAndLoadCharger(Transform playerUI){
         if (charger != null)
         {
+            charger.Reaload();
             playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
                                                                         "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
         }
         else
-        {
             playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
-            Debug.Log("Sem carregador!");
-        }
     }
 
     private void shoot(GameObject bb)
     {
-
         if (charger.getCurrentBullets() > 0)
         {
-            Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel); //LocalPosition seta muito errado
+            gunBarrel.GetComponent<AudioSource>().Play();
+            if (type == TYPE.SHOTGUN)
+                gunBarrel.parent.GetChild(6).GetComponent<AudioSource>().PlayDelayed(0.4f);
 
+            Instantiate(bb, gunBarrel.position, Quaternion.identity, gunBarrel);
             charger.consumeBB();
             RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
             playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
                                                                     "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
         }
-
-        //checkEnemy();
+        else
+        {
+            if (fullauto)
+            {
+                charger.Reaload();
+                RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
+                playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                                        "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
+            }
+        }
     }
 
-    //private void checkEnemy(){
-    //    Vector3 direction = (aimLookAt.position - gunBarrel.position).normalized;
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(gunBarrel.position, direction, out hit, 100f)){
-    //        if (hit.collider.CompareTag("Enemy"))
-    //            hit.collider.GetComponent<EnemyController>().receiveDamage();
-    //    }
-    //}
 }

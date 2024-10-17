@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  capacity: 20
+  capacity: 12
   currentBullets: 0
   bbPrefab: {fileID: 5162753622471141806, guid: f1adf39baa5fa544990bf236f73f165b, type: 3}
 --- !u!54 &6695228654739882267

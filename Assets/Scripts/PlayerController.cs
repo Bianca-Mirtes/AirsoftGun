@@ -13,9 +13,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public AirsoftGunController currentGun = null;
     [SerializeField] private AirsoftGunController[] guns;
     [SerializeField] private Material coberturaGuns;
+    [SerializeField] private Transform slots;
+    private Transform playerUI;
+
+    [SerializeField] private Sprite healthBox;
+    [SerializeField] private Sprite AmmoBox;
     private bool canReaload = true;
 
     private void Start(){
+        slots = GameObject.FindWithTag("Slots").transform;
+        playerUI = transform.GetChild(2).GetChild(0);
+
         // inicializa todas as armas como desativadas (player começa com nada)
         for (int ii = 0; ii < guns.Length; ii++)
             guns[ii].gameObject.SetActive(false);
@@ -47,7 +55,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // player inicia sem nada
-        Transform playerUI = transform.GetChild(2).GetChild(0);
         playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
         playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
     }
@@ -56,37 +63,63 @@ public class PlayerController : MonoBehaviour
     void Update() {
         if(health <= 0)
         {
-            Transform playerUI = transform.GetChild(2).GetChild(0);
             gameObject.GetComponent<FirstPersonController>().cameraEnable = false;
             FindObjectOfType<GameController>().GameOver(playerUI);
             return;
         }
-        //CARREGAR
-        if (Input.GetKeyDown(KeyCode.F)) {
-            if (currentGun == null)
+
+        // ATIVAR E DESATIVAR FULL AUTO
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if(currentGun != null)
             {
-                Transform playerUI = transform.GetChild(2).GetChild(0);
-                playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
-                playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
-                Debug.Log("Sem arma!");
-            }
-            else if(currentGun.GetComponent<AirsoftGunController>().GetCharger() != null && canReaload)
-            {
-                Transform playerUI = transform.GetChild(2).GetChild(0);
-                currentGun.checkAndLoadCharger(playerUI);
-                canReaload = false;
+                playerUI.GetChild(7).GetComponent<Toggle>().isOn = !currentGun.getfullauto();
+                currentGun.setfullauto(!currentGun.getfullauto());
             }
         }
 
-        // LARGAR OBJETOS
+        // CARREGAR ARMA
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if(currentGun != null)
+                currentGun.checkAndLoadCharger(playerUI);
+        }
+
+        // USAR KIT MÉDICO
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            for (int ii = 0; ii < slots.childCount; ii++)
+            {
+                Image slot = slots.GetChild(ii).GetComponent<Image>();
+                if (slot.sprite != null)
+                {
+                    if(slot.sprite.name == "HealthBox")
+                    {
+                        if (health < 200)
+                        {
+                            UseHealthBox();
+                            slot.sprite = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         float scrollInput = Input.mouseScrollDelta.y;
-        if (currentGun != null) { 
-            if (scrollInput != 0) {
+        if (currentGun != null) {
+            if (scrollInput != 0)
                 currentGun.changeHopUp(scrollInput);
-            }
         }
         checkBox();
+    }
+
+    private void UseHealthBox()
+    {
+        health += 25;
+        if (health > 200)
+            health = 200;
+        playerUI.GetChild(4).GetComponent<Slider>().value = health;
     }
 
     Vector3 boxSize = new Vector3(1, 1.6f, 1.5f);
@@ -105,7 +138,7 @@ public class PlayerController : MonoBehaviour
 
                 if (gun != null){
                     selectGun(gun);
-                    Transform playerUI = transform.GetChild(2).GetChild(0); // get the playerUI
+                    playerUI.GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + currentGun.GetBackspindrag();
                     playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";
                 }
             }
@@ -118,9 +151,40 @@ public class PlayerController : MonoBehaviour
                 if (charger != null){
                     bool selected = selectCharger(charger);
                     if (selected) {
-                        canReaload = true;
                         hit.gameObject.SetActive(false);
                         currentGun.resetHopUp();
+                        playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
+                                                            "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
+                    }
+                }
+            }
+
+            Collider[] hitsAmmoBox = Physics.OverlapBox(boxPosition, boxSize, transform.rotation, LayerMask.GetMask("AmmoBox"));
+            foreach (Collider hit in hitsAmmoBox)
+            {
+                for(int ii=0; ii < slots.childCount; ii++)
+                {
+                    Image slot = slots.GetChild(ii).GetComponent<Image>();
+                    if (slot.sprite == null)
+                    {
+                        slot.sprite = AmmoBox;
+                        Destroy(hit.gameObject);
+                        break;
+                    }
+                }
+            }
+
+            Collider[] hitsHealthBox = Physics.OverlapBox(boxPosition, boxSize, transform.rotation, LayerMask.GetMask("HealthBox"));
+            foreach (Collider hit in hitsHealthBox)
+            {
+                for (int ii = 0; ii < slots.childCount; ii++)
+                {
+                    Image slot = slots.GetChild(ii).GetComponent<Image>();
+                    if (slot.sprite == null)
+                    {
+                        slot.sprite = healthBox;
+                        Destroy(hit.gameObject);
+                        break;
                     }
                 }
             }
@@ -164,7 +228,6 @@ public class PlayerController : MonoBehaviour
                 {
                     if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
                     {
-                        chargers.GetChild(jj).GetComponent<ChargerController>().fullAuto(); //reseta ultimo carregador ao trocar de arma
                         chargers.GetChild(jj).gameObject.SetActive(true);
                         break;
                     }
@@ -208,11 +271,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag.Equals("BB"))
         {
             health -= 10;
-            Slider slider = transform.GetChild(2).GetChild(0).GetChild(4).GetComponent<Slider>();
+            Slider slider = playerUI.GetChild(4).GetComponent<Slider>();
             slider.value -= 10;
-            Destroy(other.gameObject);
-
-            Debug.Log("Player levou tiro");
+            Debug.Log("Acertou o player");
+            Destroy(other.gameObject, 2f);
         }
     }
     private void OnTriggerEnter(Collider other)

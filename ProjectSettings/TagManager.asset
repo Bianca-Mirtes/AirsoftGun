@@ -11,10 +11,11 @@ TagManager:
   - GLOCK
   - AK47
   - PistolGlock
-  - Shotgun
   - BB
   - Victory
   - Enemy
+  - HealthBox
+  - Slots
   layers:
   - Default
   - TransparentFX
@@ -29,8 +30,8 @@ TagManager:
   - BBs
   - Player
   - Wall
-  - 
-  - 
+  - AmmoBox
+  - HealthBox
   - 
   - 
   - 

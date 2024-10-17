@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     public EnemyGunController rifle;
     public ChargerController charge;
 
-    [SerializeField] private float distanceForAttack = 8f, distanceForAttenction = 15f;
+    [SerializeField] private float distanceForAttack = 10f, distanceForAttenction = 15f;
     private bool isDead = false;
     private float timeForFire = 0f;
     // Start is called before the first frame update
@@ -53,7 +53,6 @@ public class EnemyController : MonoBehaviour
                 ani.SetBool("isFiringGun", false);
             if (rifle.getCurrentBBs() <= 0)
                 ReloadingGun();
-
         }
         else
         {
@@ -83,7 +82,6 @@ public class EnemyController : MonoBehaviour
     public void ReloadingGun()
     {
         ani.SetBool("isReloading", true);
-        rifle.GetCharger().fullAuto();
     }
 
     public void Dead()
@@ -102,7 +100,7 @@ public class EnemyController : MonoBehaviour
                 receiveDamage(5);
             if(player.GetComponent<PlayerController>().GetCurrentGun().type == TYPE.RIFLE)
                 receiveDamage(10);
-            Destroy(other.gameObject);
+            Destroy(other.gameObject, 2f);
         }
     }
 
