@@ -30,12 +30,14 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
-        {
+        if (!isDead){
             if (health <= 0){
                 ani.SetBool("isAimingRifle", false);
                 Dead();
+                return;
             }
+
+            //transform.GetChild(2).LookAt(player);
 
             float distanceForPlayer = Vector3.Distance(transform.position, player.position);
             if (distanceForPlayer <= distanceForAttenction)
@@ -50,6 +52,12 @@ public class EnemyController : MonoBehaviour
             if (rifle.getCurrentBBs() <= 0)
                 ReloadingGun();
 
+        }
+        else
+        {
+            if (ani.GetCurrentAnimatorStateInfo(0).IsName("End")){
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -89,11 +97,21 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag.Equals("BB"))
-        {
-            health -= 10;
-            ani.SetTrigger("isDamage");
-            Debug.Log("Acertou o inimigo");
+        if (other.gameObject.tag.Equals("BB") && !ani.GetCurrentAnimatorStateInfo(0).IsName("Dead")) { 
+            receiveDamage();
         }
+    }
+
+    //private void OnTriggerEnter(Collider other){
+    //    if (other.gameObject.CompareTag("BB") && !ani.GetCurrentAnimatorStateInfo(0).IsName("Dead")){
+    //        receiveDamage();
+    //    }
+    //}
+
+    public void receiveDamage()
+    {
+        health -= 10;
+        ani.SetTrigger("isDamage");
+        Debug.Log("Acertou o inimigo");
     }
 }

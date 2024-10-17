@@ -137,5 +137,16 @@ public class AirsoftGunController : MonoBehaviour
             playerUI.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
                                                                     "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
         }
+
+        //checkEnemy();
     }
+
+    //private void checkEnemy(){
+    //    Vector3 direction = (aimLookAt.position - gunBarrel.position).normalized;
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(gunBarrel.position, direction, out hit, 100f)){
+    //        if (hit.collider.CompareTag("Enemy"))
+    //            hit.collider.GetComponent<EnemyController>().receiveDamage();
+    //    }
+    //}
 }

@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using StarterAssets;
 
 public class PlayerController : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
         if(health <= 0)
         {
             Transform playerUI = transform.GetChild(2).GetChild(0);
+            gameObject.GetComponent<FirstPersonController>().cameraEnable = false;
             FindObjectOfType<GameController>().GameOver(playerUI);
             return;
         }

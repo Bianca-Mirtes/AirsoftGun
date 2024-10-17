@@ -51,6 +51,8 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
 
+		public bool cameraEnable = true;
+
 		// cinemachine
 		private float _cinemachineTargetPitch;
 
@@ -119,7 +121,8 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
-			CameraRotation();
+			if(cameraEnable)
+				CameraRotation();
 		}
 
 		private void GroundedCheck()
