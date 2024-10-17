@@ -50,7 +50,7 @@ public class ChargerController : MonoBehaviour
         for (int ii = 0; ii < slots.childCount; ii++)
         {
             Image slot = slots.GetChild(ii).GetComponent<Image>();
-            if (slot.sprite.name == "AmmoBox")
+            if (slot.sprite != null && slot.sprite.name == "AmmoBox")
             {
                 if (type == TYPE.SHOTGUN)
                     currentBullets += 6;
