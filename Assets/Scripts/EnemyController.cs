@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
     public EnemyGunController rifle;
     public ChargerController charge;
 
-    [SerializeField] private float distanceForAttack = 15f, distanceForAttenction = 25f;
+    [SerializeField] private float distanceForAttack = 8f, distanceForAttenction = 15f;
     private bool isDead = false;
     private float timeForFire = 0f;
     // Start is called before the first frame update
@@ -24,6 +24,7 @@ public class EnemyController : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         rifle.SetCharger(charge);
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -36,13 +37,11 @@ public class EnemyController : MonoBehaviour
                 return;
             }
 
-            //transform.LookAt(player);
-
-            Vector3 direction = new Vector3(player.position.x, transform.position.y, player.position.z) - transform.position;
+            Vector3 direction = new Vector3(player.GetChild(1).position.x, transform.position.y, player.GetChild(1).position.z) - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = targetRotation;
 
-            float distanceForPlayer = Vector3.Distance(transform.position, player.position);
+            float distanceForPlayer = Vector3.Distance(transform.position, player.GetChild(1).position);
             if (distanceForPlayer <= distanceForAttenction)
                 AimingRifle();
             else
@@ -58,9 +57,8 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            if (ani.GetCurrentAnimatorStateInfo(0).IsName("End")){
+            if (ani.GetCurrentAnimatorStateInfo(0).IsName("End"))
                 Destroy(gameObject);
-            }
         }
     }
 
@@ -76,12 +74,10 @@ public class EnemyController : MonoBehaviour
         {
             ani.SetBool("isFiringGun", true);
             rifle.shoot();
-            timeForFire = 0.8f;
+            timeForFire = 0.9f;
         }
         else
-        {
             timeForFire -= Time.deltaTime;
-        }
     }
 
     public void ReloadingGun()
@@ -97,23 +93,22 @@ public class EnemyController : MonoBehaviour
         isDead = true;
     }
 
-
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag.Equals("BB") && !ani.GetCurrentAnimatorStateInfo(0).IsName("Dead")) { 
-            receiveDamage();
+            if(player.GetComponent<PlayerController>().GetCurrentGun().type == TYPE.SHOTGUN)
+                receiveDamage(15);
+            if(player.GetComponent<PlayerController>().GetCurrentGun().type == TYPE.P1911 || player.GetComponent<PlayerController>().GetCurrentGun().type == TYPE.GLOCK)
+                receiveDamage(5);
+            if(player.GetComponent<PlayerController>().GetCurrentGun().type == TYPE.RIFLE)
+                receiveDamage(10);
+            Destroy(other.gameObject);
         }
     }
 
-    //private void OnTriggerEnter(Collider other){
-    //    if (other.gameObject.CompareTag("BB") && !ani.GetCurrentAnimatorStateInfo(0).IsName("Dead")){
-    //        receiveDamage();
-    //    }
-    //}
-
-    public void receiveDamage()
+    public void receiveDamage(int damage)
     {
-        health -= 10;
+        health -= damage;
         ani.SetTrigger("isDamage");
         Debug.Log("Acertou o inimigo");
     }

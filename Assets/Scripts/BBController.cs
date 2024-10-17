@@ -49,7 +49,7 @@ public class BBController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag.Equals("Untaged"))
+        if (other.gameObject.layer == 12)
         {
             Destroy(gameObject);
         }

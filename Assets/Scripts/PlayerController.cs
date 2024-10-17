@@ -9,10 +9,11 @@ using StarterAssets;
 
 public class PlayerController : MonoBehaviour
 {
-    private int health = 100;
+    private int health = 200;
     [SerializeField] public AirsoftGunController currentGun = null;
     [SerializeField] private AirsoftGunController[] guns;
     [SerializeField] private Material coberturaGuns;
+    private bool canReaload = true;
 
     private void Start(){
         // inicializa todas as armas como desativadas (player começa com nada)
@@ -69,10 +70,11 @@ public class PlayerController : MonoBehaviour
                 playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Sem carregador";
                 Debug.Log("Sem arma!");
             }
-            if(currentGun.GetComponent<AirsoftGunController>().GetCharger() != null)
+            else if(currentGun.GetComponent<AirsoftGunController>().GetCharger() != null && canReaload)
             {
                 Transform playerUI = transform.GetChild(2).GetChild(0);
                 currentGun.checkAndLoadCharger(playerUI);
+                canReaload = false;
             }
         }
 
@@ -115,7 +117,8 @@ public class PlayerController : MonoBehaviour
 
                 if (charger != null){
                     bool selected = selectCharger(charger);
-                    if (selected) { 
+                    if (selected) {
+                        canReaload = true;
                         hit.gameObject.SetActive(false);
                         currentGun.resetHopUp();
                     }
@@ -159,7 +162,6 @@ public class PlayerController : MonoBehaviour
                 Transform chargers = itens.transform.GetChild(1); // chargers
                 for (int jj = 0; jj < chargers.childCount; jj++)
                 {
-                    Debug.Log(currentGun.GetCharger().type.ToString());
                     if (chargers.GetChild(jj).GetComponent<ChargerController>().type.ToString() == currentGun.GetCharger().type.ToString())
                     {
                         chargers.GetChild(jj).GetComponent<ChargerController>().fullAuto(); //reseta ultimo carregador ao trocar de arma
@@ -195,6 +197,12 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
+
+    public AirsoftGunController GetCurrentGun()
+    {
+        return currentGun;
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag.Equals("BB"))
@@ -202,6 +210,7 @@ public class PlayerController : MonoBehaviour
             health -= 10;
             Slider slider = transform.GetChild(2).GetChild(0).GetChild(4).GetComponent<Slider>();
             slider.value -= 10;
+            Destroy(other.gameObject);
 
             Debug.Log("Player levou tiro");
         }

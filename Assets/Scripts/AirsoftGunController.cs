@@ -38,17 +38,18 @@ public class AirsoftGunController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //fixClamp();
-        if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.V) && Time.time >= nextTimeForFire)
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeForFire)
         {
-            //Debug.Log(charger);
             if(charger != null)
             {
+                gunBarrel.GetComponent<AudioSource>().Play();
+                if (type == TYPE.SHOTGUN)
+                    gunBarrel.parent.GetChild(6).GetComponent<AudioSource>().PlayDelayed(0.4f);
+
                 nextTimeForFire = Time.time + 60f / rpm; // calcula o delay em segundos baseado no rpm
                 shoot(charger.bbPrefab);
             }
         }
-
         chargerMesh.SetActive(charger != null);
         lookAtCenter();
     }
@@ -61,13 +62,9 @@ public class AirsoftGunController : MonoBehaviour
     public void changeHopUp(float num)
     {
         if (num > 0)
-        {
             backSpinDrag = Mathf.Min(backSpinDrag + 0.01f, 0.1f);
-        }
         else
-        {
             backSpinDrag = Mathf.Max(backSpinDrag - 0.01f, 0f);
-        }
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
         Debug.Log(backSpinDrag);
     }
@@ -114,7 +111,6 @@ public class AirsoftGunController : MonoBehaviour
     public void checkAndLoadCharger(Transform playerUI){
         if (charger != null)
         {
-            charger.fullAuto();
             playerUI.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munição: " + charger.getCurrentBullets() +
                                                                         "/" + charger.GetCapacity() + " - " + charger.GetMassBB() + "g";
         }
