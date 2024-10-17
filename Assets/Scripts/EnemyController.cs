@@ -51,8 +51,8 @@ public class EnemyController : MonoBehaviour
                 Firing();
             else
                 ani.SetBool("isFiringGun", false);
-            if (rifle.getCurrentBBs() <= 0)
-                ReloadingGun();
+            //if (rifle.getCurrentBBs() <= 0)
+            //    ReloadingGun();
         }
         else
         {

@@ -74,10 +74,11 @@ public class AirsoftGunController : MonoBehaviour
             backSpinDrag = Mathf.Min(backSpinDrag + 0.01f, 0.1f);
         else
             backSpinDrag = Mathf.Max(backSpinDrag - 0.01f, 0f);
+        backSpinDrag = Mathf.Round(backSpinDrag * 100f) / 100f;
 
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
-        Transform playerUI = transform.GetChild(2).GetChild(0);
-        playerUI.GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + backSpinDrag;
+        RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
+        playerUI.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + backSpinDrag;
     }
 
     public ChargerController GetCharger()
