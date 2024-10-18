@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if (currentGun != null && currentGun.GetCharger() != null && !currentGun.isContabilizando)
+            currentGun.StartCounter();
+        
         if(health <= 0)
         {
             gameObject.GetComponent<FirstPersonController>().cameraEnable = false;
@@ -280,9 +283,6 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag.Equals("Victory"))
-        {
-            Transform playerUI = transform.GetChild(2).GetChild(0);
             FindObjectOfType<GameController>().Victory(playerUI);
-        }
     }
 }

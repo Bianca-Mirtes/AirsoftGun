@@ -7,6 +7,11 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     private bool isEndGame = false;
+
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
     private void Update()
     {
         if (isEndGame)
@@ -16,7 +21,7 @@ public class GameController : MonoBehaviour
 
     public void ResetGame()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
 
