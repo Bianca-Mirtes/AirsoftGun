@@ -12,15 +12,9 @@ public class EnemyGunController : MonoBehaviour
         this.charger = charger;
     }
 
-    public ChargerController GetCharger()
-    {
-        return charger;
-    }
+    public ChargerController GetCharger() { return charger; }
     
-    public int getCurrentBBs()
-    {
-        return charger.getCurrentBullets();
-    }
+    public int getCurrentBBs() {  return charger.getCurrentBullets(); }
 
     public void shoot()
     {

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ChargerController : MonoBehaviour
 {
-
     [Header("Infos Gun")]
     public TYPE type;
     [SerializeField] private int capacity;
@@ -20,28 +19,14 @@ public class ChargerController : MonoBehaviour
         currentBullets = capacity;
     }
 
-    public float GetMassBB()
-    {
-        return bbPrefab.GetComponent<BBController>().GetMass();
-    }
-    public int GetCapacity()
-    {
-        return capacity;
-    }
+    public float GetMassBB() { return bbPrefab.GetComponent<BBController>().GetMass(); }
+    public int GetCapacity() { return capacity; }
 
-    public int getCurrentBullets()
-    {
-        return currentBullets;
-    }
+    public int getCurrentBullets() {  return currentBullets; }
 
     public void consumeBB()
     {
         --currentBullets;
-    }
-
-    public void consumeBB(int value)
-    {
-        currentBullets -= value;
     }
 
     public void Reaload()

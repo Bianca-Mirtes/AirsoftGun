@@ -194,14 +194,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Vector3 boxPosition = transform.position + transform.TransformDirection(Vector3.forward) * distancia;
-        Gizmos.matrix = Matrix4x4.TRS(boxPosition, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.up, boxSize);
-    }
-
     private void selectGun(AirsoftGunController gun){
         //Evita pegar a atual
         if (currentGun != null && currentGun.type == gun.type)
@@ -264,10 +256,7 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public AirsoftGunController GetCurrentGun()
-    {
-        return currentGun;
-    }
+    public AirsoftGunController GetCurrentGun() { return currentGun; }
 
     private void OnCollisionEnter(Collision other)
     {

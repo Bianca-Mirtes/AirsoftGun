@@ -16,9 +16,13 @@ public class EnemyController : MonoBehaviour
     public EnemyGunController rifle;
     public ChargerController charge;
 
+    [Header("Rate of Fire (ROF)")]
+    private bool canShoot = true;
+    private float timeForFire = 0f;
+    private float delayBetweenShots = 0.45f;  // Delay entre cada disparo 
+
     [SerializeField] private float distanceForAttack = 10f, distanceForAttenction = 15f;
     private bool isDead = false;
-    private float timeForFire = 0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +41,14 @@ public class EnemyController : MonoBehaviour
                 return;
             }
 
+            if (!canShoot)
+                timeForFire += Time.deltaTime;
+            if (timeForFire >= delayBetweenShots)
+            {
+                canShoot = true;
+                timeForFire = 0f;
+            }
+
             Vector3 direction = new Vector3(player.GetChild(1).position.x, transform.position.y, player.GetChild(1).position.z) - transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = targetRotation;
@@ -51,8 +63,6 @@ public class EnemyController : MonoBehaviour
                 Firing();
             else
                 ani.SetBool("isFiringGun", false);
-            //if (rifle.getCurrentBBs() <= 0)
-            //    ReloadingGun();
         }
         else
         {
@@ -69,14 +79,12 @@ public class EnemyController : MonoBehaviour
 
     public void Firing()
     {
-        if(timeForFire <= 0)
+        if (canShoot)
         {
             ani.SetBool("isFiringGun", true);
             rifle.shoot();
-            timeForFire = 0.9f;
+            canShoot = false;
         }
-        else
-            timeForFire -= Time.deltaTime;
     }
 
     public void ReloadingGun()

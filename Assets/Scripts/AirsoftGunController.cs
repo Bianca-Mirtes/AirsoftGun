@@ -39,17 +39,11 @@ public class AirsoftGunController : MonoBehaviour
     [Header("Time")]
     [SerializeField][Range(0, 1)] private float time = 1f;
 
-    public bool getfullauto()
-    {
-        return fullauto;
-    }
+    public bool getfullauto() { return fullauto; }
 
     public float GetBackspindrag() { return backSpinDrag; }
 
-    public void Fullauto()
-    {
-        fullauto = !fullauto;
-    }
+    public void Fullauto() { fullauto = !fullauto;  }
 
     public void StartCounter()
     {
@@ -81,6 +75,7 @@ public class AirsoftGunController : MonoBehaviour
         }
         count += Time.deltaTime;
 
+        // controle do tempo entre disparos
         if (!canShoot)
             nextTimeForFire += Time.deltaTime;
 
@@ -90,7 +85,7 @@ public class AirsoftGunController : MonoBehaviour
             nextTimeForFire = 0f;
         }
 
-        // Simula um disparo
+        // Simula o disparo da arma
         if (Input.GetButtonDown("Fire1") || fullauto)
         {
             if(canShoot)
@@ -107,6 +102,7 @@ public class AirsoftGunController : MonoBehaviour
         backSpinDrag = 0.001f;
     }
 
+    // Mudança de Hop-up
     public void changeHopUp(float num)
     {
         if (num > 0)
@@ -120,10 +116,7 @@ public class AirsoftGunController : MonoBehaviour
         playerUI.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + backSpinDrag;
     }
 
-    public ChargerController GetCharger()
-    {
-        return charger;
-    }
+    public ChargerController GetCharger() { return charger; }
 
     public void SetCharger(ChargerController charger)
     {
