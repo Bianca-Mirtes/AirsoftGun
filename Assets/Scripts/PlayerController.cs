@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
             if(currentGun != null)
             {
                 playerUI.GetChild(7).GetComponent<Toggle>().isOn = !currentGun.getfullauto();
-                currentGun.setfullauto(!currentGun.getfullauto());
+                currentGun.Fullauto();
             }
         }
 

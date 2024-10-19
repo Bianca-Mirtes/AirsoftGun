@@ -15,12 +15,12 @@ public enum TYPE{
 public class AirsoftGunController : MonoBehaviour
 {
     [Header("Attributes")]
-    [SerializeField][Range(0f, 0.1f)] private float backSpinDrag; // backspin da arma
+    [SerializeField][Range(0.001f, 0.1f)] private float backSpinDrag; // backspin da arma
     [SerializeField] public TYPE type; // tipo da arma
     [SerializeField] private ChargerController charger = null; // carregador da arma
-    [SerializeField] float rpm = 600;   // 600 rotações por minuto
     [SerializeField] float nextTimeForFire = 0f; // tempo para o proximo tiro
-    [SerializeField] public float delayBetweenShots = 0.2f;  // Delay entre cada disparo em segundos
+    [SerializeField] private float delayBetweenShots;  // Delay entre cada disparo em segundos
+    [SerializeField] private bool canShoot = true; // booleano para saber se pode ou não atirar
     [SerializeField] bool fullauto = false; // booleano para controle da função full-auto
 
     [Header("Rate of Fire (ROF)")]
@@ -44,14 +44,11 @@ public class AirsoftGunController : MonoBehaviour
         return fullauto;
     }
 
-    public float GetBackspindrag()
-    {
-        return backSpinDrag;
-    }
+    public float GetBackspindrag() { return backSpinDrag; }
 
-    public void setfullauto(bool value)
+    public void Fullauto()
     {
-        fullauto = value;
+        fullauto = !fullauto;
     }
 
     public void StartCounter()
@@ -59,6 +56,16 @@ public class AirsoftGunController : MonoBehaviour
         count = 0;
         numShots = 0;
         isContabilizando = true;
+    }
+
+    private void Start()
+    {
+        if (type == TYPE.SHOTGUN)
+            delayBetweenShots = 0.8f;
+        if (type == TYPE.GLOCK || type == TYPE.P1911)
+            delayBetweenShots = 0.3f;
+        if (type == TYPE.RIFLE)
+            delayBetweenShots = 0.15f;
     }
 
     // Update is called once per frame
@@ -74,10 +81,20 @@ public class AirsoftGunController : MonoBehaviour
         }
         count += Time.deltaTime;
 
-        // Simula um disparo
-        if (Input.GetButtonDown("Fire1"))
+        if (!canShoot)
+            nextTimeForFire += Time.deltaTime;
+
+        if (nextTimeForFire >= delayBetweenShots)
         {
-            if (charger != null)
+            canShoot = true;
+            nextTimeForFire = 0f;
+        }
+
+        // Simula um disparo
+        if (Input.GetButtonDown("Fire1") || fullauto)
+        {
+            if(canShoot)
+                if (charger != null)
                     shoot(charger.bbPrefab);
         }
 
@@ -87,15 +104,15 @@ public class AirsoftGunController : MonoBehaviour
 
     public void resetHopUp()
     {
-        backSpinDrag = 0.01f;
+        backSpinDrag = 0.001f;
     }
 
     public void changeHopUp(float num)
     {
         if (num > 0)
-            backSpinDrag = Mathf.Min(backSpinDrag + 0.01f, 0.1f);
+            backSpinDrag = Mathf.Min(backSpinDrag + 0.001f, 0.1f);
         else
-            backSpinDrag = Mathf.Max(backSpinDrag - 0.01f, 0f);
+            backSpinDrag = Mathf.Max(backSpinDrag - 0.001f, 0.0001f);
         backSpinDrag = Mathf.Round(backSpinDrag * 100f) / 100f;
 
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
@@ -121,24 +138,6 @@ public class AirsoftGunController : MonoBehaviour
         transform.LookAt(aimLookAt);
     }
 
-    //PRA VERSAO DOIS
-    public float rotationRange = 2f;
-
-    private IEnumerator SineRotationLoop()
-    {
-        float time = 0f;
-
-        while (true)
-        {
-            time += Time.deltaTime;
-            float rotationX = Mathf.Sin(time) * rotationRange;
-            float rotationY = Mathf.Sin(time) * rotationRange;
-            float rotationZ = gameObject.transform.localRotation.eulerAngles.z;
-            gameObject.transform.localRotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
-            yield return null;
-        }
-    }
-
     public void checkAndLoadCharger(Transform playerUI){
         if (charger != null)
         {
@@ -154,6 +153,7 @@ public class AirsoftGunController : MonoBehaviour
     {
         if (charger.getCurrentBullets() > 0)
         {
+            canShoot = false;
             gunBarrel.GetComponent<AudioSource>().Play();
             if (type == TYPE.SHOTGUN)
                 gunBarrel.parent.GetChild(6).GetComponent<AudioSource>().PlayDelayed(0.5f);
