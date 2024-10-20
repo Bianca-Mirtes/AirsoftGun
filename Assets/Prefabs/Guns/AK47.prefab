@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6481032360008057839}
-  - component: {fileID: 4715993190739110376}
   - component: {fileID: 88588689392045559}
+  - component: {fileID: 4715993190739110376}
   - component: {fileID: 5013548784355816062}
   m_Layer: 7
   m_Name: AK47
@@ -35,6 +35,27 @@ Transform:
   - {fileID: 3895732218427855941}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 90}
+--- !u!65 &88588689392045559
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793780832429572731}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.03, y: 0.42, z: 1.8}
+  m_Center: {x: 0, y: 0.06, z: 0.49}
 --- !u!54 &4715993190739110376
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -62,27 +83,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &88588689392045559
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5793780832429572731}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.03, y: 0.42, z: 1.8}
-  m_Center: {x: 0, y: 0.06, z: 0.49}
 --- !u!114 &5013548784355816062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,13 +97,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backSpinDrag: 0
   type: 2
+  charger: {fileID: 0}
+  nextTimeForFire: 0
+  delayBetweenShots: 0
+  canShoot: 1
+  fullauto: 0
+  numShots: 0
+  countTime: 60
+  count: 0
+  rateOfFire: 0
+  isContabilizando: 0
   slot: {fileID: 3574975482452932842}
   gunBarrel: {fileID: 3574975482452932842}
   aimLookAt: {fileID: 0}
   chargerMesh: {fileID: 6371545322550210526}
   time: 1
-  charger: {fileID: 0}
-  rotationRange: 2
 --- !u!1001 &3574400918731535278
 PrefabInstance:
   m_ObjectHideFlags: 0

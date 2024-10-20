@@ -12,8 +12,8 @@ public class BBController : MonoBehaviour
     private float conversionRate = 3.281f; //multiplica m/s por isso para chegar em pés
     private Rigidbody rig;
     private Vector3 localForward;
+    public float backSpinDrag;
 
-    public float backSpinDrag { get; set; }
     void Start()
     {
         rig = GetComponent<Rigidbody>();

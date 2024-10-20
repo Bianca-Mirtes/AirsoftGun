@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
             foreach (Collider hit in hitsGuns){
                 AirsoftGunController gun = hit.gameObject.GetComponent<AirsoftGunController>();
 
-                if (gun != null){
+                if (gun != null && !gun.onPlayer){
                     selectGun(gun);
                     playerUI.GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + currentGun.GetBackspindrag();
                     playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = currentGun.type + "";

@@ -14,6 +14,9 @@ public enum TYPE{
 
 public class AirsoftGunController : MonoBehaviour
 {
+    [Header("Status")]
+    [SerializeField] public bool onPlayer;
+
     [Header("Attributes")]
     [SerializeField][Range(0.001f, 0.1f)] private float backSpinDrag; // backspin da arma
     [SerializeField] public TYPE type; // tipo da arma
@@ -99,7 +102,9 @@ public class AirsoftGunController : MonoBehaviour
 
     public void resetHopUp()
     {
-        backSpinDrag = 0.001f;
+        backSpinDrag = 10f;
+        charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
+        print(charger.bbPrefab.GetComponent<BBController>().backSpinDrag);
     }
 
     // Mudança de Hop-up
@@ -109,10 +114,10 @@ public class AirsoftGunController : MonoBehaviour
             backSpinDrag = Mathf.Min(backSpinDrag + 0.001f, 0.1f);
         else
             backSpinDrag = Mathf.Max(backSpinDrag - 0.001f, 0.0001f);
-        backSpinDrag = Mathf.Round(backSpinDrag * 100f) / 100f;
 
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
         RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();
+        print(charger.bbPrefab.GetComponent<BBController>().backSpinDrag);
         playerUI.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = "Hop-up: " + backSpinDrag;
     }
 
