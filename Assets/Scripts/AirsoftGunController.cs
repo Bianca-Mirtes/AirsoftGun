@@ -17,8 +17,13 @@ public class AirsoftGunController : MonoBehaviour
     [Header("Status")]
     [SerializeField] public bool onPlayer;
 
+    [Header("Backspin")]
+    [SerializeField][Range(0.0f, 1f)] private float backSpinDrag;
+    [SerializeField] private float backSpinDragStep = 0.01f;
+    [SerializeField] private float backSpinDragMin = 0f;
+    [SerializeField] private float backSpinDragMax = 1f;
+
     [Header("Attributes")]
-    [SerializeField][Range(0.001f, 0.1f)] private float backSpinDrag; // backspin da arma
     [SerializeField] public TYPE type; // tipo da arma
     [SerializeField] private ChargerController charger = null; // carregador da arma
     [SerializeField] float nextTimeForFire = 0f; // tempo para o proximo tiro
@@ -102,7 +107,7 @@ public class AirsoftGunController : MonoBehaviour
 
     public void resetHopUp()
     {
-        backSpinDrag = 10f;
+        backSpinDrag = backSpinDragMin;
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
         print(charger.bbPrefab.GetComponent<BBController>().backSpinDrag);
     }
@@ -111,9 +116,10 @@ public class AirsoftGunController : MonoBehaviour
     public void changeHopUp(float num)
     {
         if (num > 0)
-            backSpinDrag = Mathf.Min(backSpinDrag + 0.001f, 0.1f);
+            backSpinDrag = Mathf.Min(backSpinDrag + backSpinDragStep, backSpinDragMax);
         else
-            backSpinDrag = Mathf.Max(backSpinDrag - 0.001f, 0.0001f);
+            backSpinDrag = Mathf.Max(backSpinDrag - backSpinDragStep, backSpinDragMin);
+        backSpinDrag = Mathf.Round(backSpinDrag * 100f) / 100f;
 
         charger.bbPrefab.GetComponent<BBController>().backSpinDrag = backSpinDrag;
         RectTransform playerUI = GameObject.Find("PlayerUI").GetComponent<RectTransform>();

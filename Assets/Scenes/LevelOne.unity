@@ -6505,6 +6505,10 @@ PrefabInstance:
       value: 0.000000014901161
       objectReference: {fileID: 0}
     - target: {fileID: 2949248893085456102, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: onPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2949248893085456102, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: aimLookAt
       value: 
       objectReference: {fileID: 375376026}
@@ -6625,9 +6629,17 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4499044415793692796, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: onPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499044415793692796, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: aimLookAt
       value: 
       objectReference: {fileID: 375376026}
+    - target: {fileID: 4499044415793692796, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragMax
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4677947751596807495, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -6726,6 +6738,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6668679822327165417, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668679822327165417, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: onPlayer
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6668679822327165417, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
@@ -6829,12 +6845,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: onPlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: aimLookAt
       value: 
       objectReference: {fileID: 375376026}
     - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDrag
+      value: 0.001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

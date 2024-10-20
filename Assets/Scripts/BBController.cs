@@ -48,9 +48,7 @@ public class BBController : MonoBehaviour
         float liftAmount = Mathf.Sqrt(speed) * backSpinDrag;
 
         // Aplicada na direção perpendicular à direção da BB
-        Vector3 liftDirection = Vector3.Cross(rig.velocity.normalized, Vector3.up);
-
-        return liftDirection * liftAmount;
+        return Vector3.up * liftAmount;
     }
 
     public float GetMass()
