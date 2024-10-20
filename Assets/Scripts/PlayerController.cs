@@ -11,48 +11,14 @@ public class PlayerController : MonoBehaviour
 {
     private int health = 200;
     [SerializeField] public AirsoftGunController currentGun = null;
-    [SerializeField] private AirsoftGunController[] guns;
-    [SerializeField] private Material coberturaGuns;
     [SerializeField] private Transform slots;
     private Transform playerUI;
 
     [SerializeField] private Sprite healthBox;
     [SerializeField] private Sprite AmmoBox;
-    private bool canReaload = true;
-
     private void Start(){
         slots = GameObject.FindWithTag("Slots").transform;
         playerUI = transform.GetChild(2).GetChild(0);
-
-        // inicializa todas as armas como desativadas (player começa com nada)
-        for (int ii = 0; ii < guns.Length; ii++)
-            guns[ii].gameObject.SetActive(false);
-
-        // shader material guns
-        GameObject itens = GameObject.Find("ITENS");
-        Transform Guns = itens.transform.GetChild(0); // guns
-        for (int jj = 0; jj < Guns.childCount; jj++)
-        {
-            Transform gun = Guns.GetChild(jj).GetChild(0);
-            gun.GetComponent<MeshRenderer>().material = coberturaGuns;
-            if (gun.childCount != 0)
-            {
-                for (int kk=0; kk < gun.childCount; kk++)
-                    gun.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
-            }
-        }
-        // shader material chargers
-        Transform chargers = itens.transform.GetChild(1); // Chargers
-        for (int jj = 0; jj < Guns.childCount; jj++)
-        {
-            Transform charger = chargers.GetChild(jj).GetChild(0);
-            charger.GetComponent<MeshRenderer>().material = coberturaGuns;
-            if (charger.childCount != 0)
-            {
-                for (int kk = 0; kk < charger.childCount; kk++)
-                    charger.GetChild(kk).GetComponent<MeshRenderer>().material = coberturaGuns;
-            }
-        }
 
         // player inicia sem nada
         playerUI.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sem Arma";
@@ -204,7 +170,7 @@ public class PlayerController : MonoBehaviour
         // Reativa a arma atual que foi trocada por outra
         if (currentGun != null)
         {
-            GameObject itens = GameObject.Find("ITENS");
+            GameObject itens = FindObjectOfType<GameController>().GetItens();
             Transform guns = itens.transform.GetChild(0); // guns
             for (int jj = 0; jj < guns.childCount; jj++)
             {
@@ -229,12 +195,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
+        AirsoftGunController[] Guns = FindObjectOfType<GameController>().GetGuns();
         //Liga e desliga baseado na enum
-        for (int ii = 0; ii < guns.Length; ii++) {
-            guns[ii].gameObject.SetActive(guns[ii].type == gun.type);
-            if(guns[ii].type == gun.type)
-                currentGun = guns[ii];
+        for (int ii = 0; ii < Guns.Length; ii++) {
+            Guns[ii].gameObject.SetActive(Guns[ii].type == gun.type);
+            if(Guns[ii].type == gun.type)
+                currentGun = Guns[ii];
         }
 
         Debug.Log("Pegou "+ gun.type.ToString());
