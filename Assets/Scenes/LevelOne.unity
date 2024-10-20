@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.3822313, g: 0.46889317, b: 0.613982, a: 1}
+  m_IndirectSpecularColor: {r: 0.38223127, g: 0.4688933, b: 0.61398077, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6516,6 +6516,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2949248893085456102, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragMax
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2949248893085456102, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragStep
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3046435064005169396, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -6638,7 +6646,11 @@ PrefabInstance:
       objectReference: {fileID: 375376026}
     - target: {fileID: 4499044415793692796, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: backSpinDragMax
-      value: 1
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4499044415793692796, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragStep
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4677947751596807495, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6752,6 +6764,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6668679822327165417, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragMax
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668679822327165417, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragStep
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6994869325493905768, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -6858,7 +6878,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
       propertyPath: backSpinDrag
-      value: 0.001
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragMax
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9109185647664037556, guid: 035bf1ba97d19214580cfe6f5a29fdc3, type: 3}
+      propertyPath: backSpinDragStep
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37163,15 +37191,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1398173981959796870, guid: 94ea97aea849c19418db682abceec832, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.29
+      value: -12.5374
       objectReference: {fileID: 0}
     - target: {fileID: 1398173981959796870, guid: 94ea97aea849c19418db682abceec832, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.594
+      value: 0.21875
       objectReference: {fileID: 0}
     - target: {fileID: 1398173981959796870, guid: 94ea97aea849c19418db682abceec832, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.44
+      value: 13.178094
       objectReference: {fileID: 0}
     - target: {fileID: 1398173981959796870, guid: 94ea97aea849c19418db682abceec832, type: 3}
       propertyPath: m_LocalRotation.w
